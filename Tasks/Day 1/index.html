@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Layer Symbology</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div>
+        <h2> CHANGE LAYER SYMBOLOGY</h2>
+        <div class="ddwn">
+            <h3>LAYER - STATE</h3>
+            <p>
+                Change the layer's symbology by modifying the symbol parameters below.
+                <br>
+                * The changes will be applied to the current session for the logged-in user. Other users will continue
+                to view the default symbol.
+            </p>
+            <div>
+                <h3> OUTLINE </h3>
+                <form id="frm1">
+                    <label class="lbl"> Line Style: </label>
+                    <select>
+                        <option value="Solid"> Solid
+                        </option>
+                        <option value="Transparent"> Transparent
+                        </option>
+                        <option value="Translucent"> Translucent
+                        </option>
+                    </select>
+                </form> <br>
+                <form id="frm2">
+                    <label class="lbl"> Width (Pt): </label>
+                    <select>
+                        <option value="1"> 1
+                        </option>
+                        <option value="2"> 2
+                        </option>
+                        <option value="3"> 3
+                        </option>
+                    </select>
+                </form>
+                <form id="frm3">
+                    <label class="lbl"> Color: </label>
+                    <input type="color" id="fc" name="favcolor" value="#800080"><br>
+                </form>
+            </div>
+            <div class="lbl1">
+                <h3 id="h3"> FILL </h3>
+                <form>
+                    <label> Color: </label><br>
+                    <input type="color" id="fc" name="favcolor" value="#ff7f50"><br>
+                </form>
+
+                <br>
+                <button class="btn">
+                    Cancel
+                </button>
+                <button class="btn">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

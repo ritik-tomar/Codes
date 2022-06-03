@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Query a National Park Service Site</title>
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.16/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.16/"></script>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/tasks/support/Query",
+      "esri/layers/GraphicsLayer",
+      "esri/Graphic",
+      "esri/geometry/Extent"
+    ], function(Map, MapView, FeatureLayer, Query, GraphicsLayer, Graphic,Extent) {
+
+      //var resultsLayer = new GraphicsLayer();
+    
+      var map = new Map({
+        basemap: "dark-gray-vector",
+      });
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: map,
+        zoom: 5,
+        center: [-112.9007, 45.0379] // longitude, latitude
+      });
+
+      //Assign a feature server of your choice to your FeatureLayer
+
+      var featureLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0", //URL to reference for the feature layer
+      });
+
+      //Assign a where clause, returnGeometry, and outFields to the Query class.
+      var query = new Query({ 
+        where: "NarcoticsC = '2'", //The where clause
+        returnGeometry: true , //The boolean property for returning the geometry
+        outFields: ["*"] //The fields to return from the query
+      });
+      
+      featureLayer.queryFeatures(query).then(function(results){
+          console.log(results);
+          var geomComb = null;
+          for(var i=0; i<results.features.length; i++){
+            if(i==0){
+              geomComb = results.features[i].geometry.extent
+            }
+            if(i!=0){
+              geocomb = geomComb.union(results.features[i].geometry.extent)
+            }
+          }
+          view.goTo(geomComb)
+          //displayResults(results);
+      })
+
+      //Assign a symbol type to the graphics
+      // function displayResults(results){
+      //     var features = results.features.map(function(graphic){
+      //         graphic.symbol = {
+      //             type: "", //The type of symbol
+      //             style: "", //The symbol style
+      //             size: , //The symbol size
+      //             color: "" //The symbol color
+      //         };
+      //         return graphic;
+      //     });
+      //     resultsLayer.addMany(features);
+      //     }
+      map.add(featureLayer);
+    });
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>

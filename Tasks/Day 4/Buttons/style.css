@@ -1,0 +1,55 @@
+html, body, #viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+  div.buttonsList{
+
+
+}
+  div.legendDiv{
+    position:absolute;
+    left: 0px; bottom: 0px;
+    width: 200px;
+    height:300px;
+    background-color:lightblue;
+    display: none;   
+    
+}
+div.basemapDiv{
+  width: 200px;
+    height:300px;
+    background-color:lightblue;
+    display: none; 
+}
+
+#layerListDiv{
+  position:absolute;
+    
+    width: 200px;
+    height:300px;
+    background-color:lightblue;
+    display: none; 
+}
+  #legendButton{
+    position: absolute;
+    top: 105px;
+    left: 15px;
+    width:100px;
+    height:20px;
+}
+  #basemapButton{
+    position: absolute;
+    top: 130px;
+    left: 15px;
+    width:100px;
+    height:20px;
+}
+#layerListButton{
+position: absolute;
+    top: 155px;
+    left: 15px;
+    width:100px;
+    height:20px;
+}

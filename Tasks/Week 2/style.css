@@ -1,0 +1,68 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#viewDiv {
+    height: 70%;
+    width: 100%;
+}
+
+.container {
+    height: 50%;
+    width: 100%;
+}
+
+#basemapGallery {
+    position: absolute;
+    height: 313px;
+    width: 284px;
+    left: 95px;
+    top: 84px;
+    display: none;
+}
+
+#basemapButton {
+    position: absolute;
+    height: 20px;
+    width: 70px;
+    top: 255px;
+    left: 14px;
+}
+
+#layerList {
+    position: absolute;
+    height: 115px;
+    width: 284px;
+    left: 95px;
+    top: 84px;
+    display: none;
+}
+
+#layerListButton {
+    position: absolute;
+    height: 20px;
+    width: 70px;
+    top: 285px;
+    left: 14px;
+}
+
+#legend {
+    position: absolute;
+    height: 313px;
+    width: 284px;
+    left: 95px;
+    top: 84px;
+    display: none;
+}
+
+#legendButton {
+    position: absolute;
+    height: 20px;
+    width: 70px;
+    top: 315px;
+    left: 14px;
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale-1,maximum-scale-1,user-scalable-no">
+    <title>Creating a Web Map</title>
+
+    <style>
+        html,
+        body,
+        #mapDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #basemapGallery{
+                position: absolute;
+            height: 313px;
+            width: 284px;
+            left: 95px;
+            top: 84px;
+            display:none;
+        }
+        #basemapButton{
+                position: absolute;
+            height: 35px;
+            width:69px;
+            top: 106px;
+            left: 15px;
+            
+        }
+        #layerList{
+            position: absolute;
+            height: 115px;
+            width: 284px;
+            left: 95px;
+            top: 84px;
+            display:none;       
+        }
+        #layerListButton{
+                position:absolute;
+            height: 35px;
+            width:69px;
+            top: 195px;
+            left: 15px;
+        }
+        #legend{
+            position:absolute;
+            height: 313px;
+            width: 284px;
+            left: 95px;
+            top: 84px;
+            display:none;
+        }
+        #legendButton{
+                position: absolute;
+            height: 35px;
+            width:69px;
+            top: 150px;
+            left: 15px;
+        }      
+
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.22/"></script>
+
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/FeatureLayer",
+            "esri/widgets/BasemapGallery",
+            "esri/widgets/LayerList",
+            "esri/widgets/Legend",
+            "esri/widgets/Locate",
+            "esri/widgets/Search",
+            "esri/tasks/support/Query",
+            "esri/Graphic",
+            "esri/geometry/Geometry"                                
+        ],
+            function (Map, MapView, FeatureLayer,BasemapGallery,LayerList,
+                    Legend,Locate,Search,Query,Graphic,Geometry){
+                document.getElementById("basemapButton").addEventListener("click", openBasemap);
+                document.getElementById("layerListButton").addEventListener("click", openlayerList);
+                document.getElementById("legendButton").addEventListener("click", openlegend);
+
+               //creating a basemap--------------------->
+                var map = new Map({
+                    basemap: "satellite"
+                });
+
+                //creating a map view--------------------->
+
+                var view = new MapView({
+                container: "mapDiv",
+                map: map,
+                zoom: 9,
+                center: [-87.6297982,41.8781136]
+                
+                });
+                
+                //feature layer--------------->
+                var layer1 = new FeatureLayer({
+                    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0"
+                    });
+                map.add(layer1);
+
+                var layer2 = new FeatureLayer({
+                    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_L_Lines/FeatureServer/1"
+                    });
+                map.add(layer2);
+
+                var featureLayer = new FeatureLayer({
+                    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0"
+                })
+
+
+                //creating basemap wigdet-------->
+                var basemapGallery = new BasemapGallery({
+                    view: view,
+                    container: "basemapGallery"                    
+                    });
+                function openBasemap(){
+                    if(document.getElementById("basemapGallery").style.display == "block"){
+                    document.getElementById("basemapGallery").style.display = "none" 
+                    }else{
+                    document.getElementById("basemapGallery").style.display = "block" 
+                        }
+                    }
+                            
+                // creating a layerlist widget  
+                var layerList = new LayerList({
+                    view: view,
+                    container:"layerList"
+                    });
+                function openlayerList(){
+                    if(document.getElementById("layerList").style.display == "block"){
+                    document.getElementById("layerList").style.display = "none" 
+                    }else{
+                    document.getElementById("layerList").style.display = "block" 
+                        }
+                }    
+            
+                //creating a legend widget
+                var legend = new Legend({
+                    view:view,
+                    container:"legend"
+                });  
+                function openlegend(){
+                    if(document.getElementById("legend").style.display == "block"){
+                    document.getElementById("legend").style.display = "none" 
+                    }else{
+                    document.getElementById("legend").style.display = "block" 
+                        }
+                }     
+
+                //locate widget
+                var locate = new Locate({
+                    view: view               
+                });
+                view.ui.add(locate, "top-right");
+                
+                // search widget
+                var search = new Search({
+                    view: view,
+                    sources: 
+                            [
+                            {
+                                layer: new FeatureLayer({
+                                    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0",
+                                    outFields: ["*"]
+                                }),
+                                searchFields: ["NAME"],
+                                displayField: "Name",
+                                exactMatch: false,
+                                outFields: ["*"],
+                                name: "Name",
+                                placeholder: "amogh",
+                                maxResults: 6,
+                                maxSuggestions: 6,
+                                suggestionsEnabled: true,
+                                minSuggestCharacters: 0
+                            },
+                            {
+                                layer: new FeatureLayer({
+                                    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/US_Counties/FeatureServer/0",
+                                    outFields: ["*"]
+                                }),
+                                searchFields: ["STATE_FIPS", "STATE_NAME"],
+                                displayField: "STATE_FIPS",
+                                exactMatch: false,
+                                outFields: ["*"],
+                                name: "US Cities",
+                                placeholder: "City Names",
+                                maxResults: 6,
+                                maxSuggestions: 6,
+                                suggestionsEnabled: true,
+                                minSuggestCharacters: 0
+                            }
+
+                            ]
+                });
+
+                view.ui.add(search, "top-right");
+
+                //Query Widget------------------------------------------------------------->
+                var query = new Query({
+                    where: "NarcoticsC = '23' OR NarcoticsC = '2'",
+                    returnGeometry: true,
+                    outFields: ["*"]
+                });
+
+                featureLayer.queryFeatures(query).then(function(results){
+                        console.log(results);
+
+                        //3-March goTo method: Zoom to the first feature you are getting from query using goTo method -------------->
+
+                        view.goTo(results.features[0].geometry)
+                        const fillSymbol = {
+                        type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                        color: [227, 139, 79, 0.8],
+                        outline: {
+                        // autocasts as new SimpleLineSymbol()
+                        color: [255, 255, 255],
+                        width: 1
+                    }
+                    };
+
+                    // Adding Graphics: Add graphic on the first feature from query--->
+
+                    const polygonGraphic = new Graphic({
+                    geometry: results.features[0].geometry,
+                    symbol: fillSymbol
+                    });
+
+                    // Add the graphics to the view's graphics layer
+                    view.graphics.add(polygonGraphic);
+
+                });
+            
+
+            });
+
+    
+    </script>
+</head>
+
+<body>
+    <div id="mapDiv"></div>
+    <div id="basemapGallery"></div>
+    <div id="layerList"></div>
+    <div id="legend"></div>
+
+    <button id="basemapButton">Basemap</button>
+    <button id="layerListButton">Layers</button>
+    <button id="legendButton">Legend</button>
+</body>
+
+</html>

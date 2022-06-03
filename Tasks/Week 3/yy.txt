@@ -1,0 +1,13 @@
+
+
+    const csvlayer = new CSVLayer({
+        url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.csv",
+        copyright: "USGS Earthquakes"
+    });
+    map.add(csvlayer);
+
+
+    const layer = new FeatureLayer({
+        url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0"
+    });
+    map.add(layer);

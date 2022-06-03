@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale-1,maximum-scale-1,user-scalable-no">
+        <title>Web Application</title>
+        <style>
+            html,
+            body,
+            #mapcontainer{
+                padding:0;
+                margin:0;
+                height:100%;
+                width:100%;
+            }
+
+            #layerlist{
+                position: absolute;
+                height: 313px;
+                width: 284px;
+                left: 200px;
+                top: 100px;
+                display: none;
+            }
+
+            #layerbutton{
+                position: absolute;
+                top: 100px;
+                left: 30px;
+                background-color: #06afe7;
+                color: black;                
+                font-size: 16px;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                
+                
+            }
+
+    
+            #basemap{
+                position: absolute;
+                height: 313px;
+                width: 284px;
+                left: 200px;
+                top: 170px;
+                display: none;
+            }
+
+            #basemapbutton{
+                position: absolute;
+                top: 170px;
+                left: 30px;
+                background-color: #06afe7;
+                color: black;
+                font-size: 16px;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block         
+                
+            }
+
+            #legend{
+                position: absolute;
+                height: 313px;
+                width: 284px;
+                left: 180px;
+                top: 240px;
+                display: none;
+            }
+
+            #legendbutton{
+                position: absolute;
+                top: 240px;
+                left: 30px;
+                background-color: #06afe7;
+                color: black;
+                font-size: 16px;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block
+                
+            }
+           
+        </style>
+
+        <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+        <script src="https://js.arcgis.com/4.22/"></script>
+
+
+        <script>
+            require(
+                ["esri/Map", 
+                "esri/views/MapView",
+                "esri/layers/FeatureLayer", 
+                "esri/widgets/BasemapGallery",
+                "esri/widgets/LayerList",
+                "esri/widgets/Legend",
+                "esri/widgets/Search",
+                "esri/rest/support/Query"], 
+
+            function (Map, MapView,FeatureLayer,BasemapGallery,LayerList,Legend, Search, Query) {
+                document.getElementById("layerbutton").addEventListener("click", layerfunc);
+                document.getElementById("basemapbutton").addEventListener("click",basefunc); 
+                document.getElementById("legendbutton").addEventListener("click", legfunc);
+                //constructing a map
+                var map1 = new Map({
+                basemap: "satellite"
+                });
+
+                //creating a map view
+                var mapview = new MapView({
+                    container: "mapcontainer",
+                    map: map1,
+                    zoom: 10,
+                    center: [-87.6297982,41.8781136]
+                });
+
+                var feature1 = new FeatureLayer({
+                    url:"https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0",
+                    
+                });
+                map1.add(feature1);
+
+                var query1 = new Query({
+                    where:" NarcoticsC = 23" && "NarcoticsC = 2",
+                    returnGeometry: true,
+                    outFields: ['*']
+                })
+
+                feature1.queryFeatures(query1).then(function(results){
+                    console.log(results)
+                });
+                
+                var source = [
+                        {
+                            layer: new FeatureLayer({
+                            url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_Crime_Tracts/FeatureServer/0",
+                            outFields: ["*"]
+                            }),
+                            exactMatch: false,
+                            name: "Chicago Search",
+                            placeholder: "Second Search Widget",
+                            maxResults: 6,
+                            maxSuggestions: 6,
+                            suggestionsEnabled: true,
+                            minSuggestCharacters: 3
+                        }];
+
+                var feature = new FeatureLayer({
+                     url:"https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Chicago_L_Lines/FeatureServer/1"
+                });
+                 map1.add(feature);
+
+                
+                                
+                var basemap = new BasemapGallery({
+                    view: mapview,
+                    container: "basemap"
+                });
+                function basefunc(){
+                    if(document.getElementById("basemap").style.display == "block"){
+                    document.getElementById("basemap").style.display = "none" 
+                    }   else{
+                    document.getElementById("basemap").style.display = "block" 
+                    }
+                }
+
+                var layerList = new LayerList({
+                    view: mapview,
+                    container:"layerlist"
+                });
+
+                function layerfunc(){
+                    if(document.getElementById("layerlist").style.display == "block"){
+                    document.getElementById("layerlist").style.display = "none" 
+                    }   else{
+                    document.getElementById("layerlist").style.display = "block" 
+                    }
+                }
+
+                var leg = new Legend({
+                    view: mapview,
+                    container: "legend"
+                });
+
+                function legfunc(){
+                    if(document.getElementById("legend").style.display == "block"){
+                    document.getElementById("legend").style.display = "none" 
+                    }   else{
+                    document.getElementById("legend").style.display = "block" 
+                    }
+                }
+
+                var search1 = new Search({
+                    view: mapview,
+                    sources: source
+                });
+                mapview.ui.add(search1 ,{
+                    position: "top-right",
+                    index: 2
+                });
+      
+        });
+
+  </script>    
+  
+</head>
+        <div id="mapcontainer"></div>
+        <div id="layerlist"></div>
+        <button id="layerbutton"> Layers </button>
+
+        <div id="basemap"></div>
+        <button id="basemapbutton">Basemap</button>
+        
+        <div id="legend"></div>
+        <button id="legendbutton">Legend</button>
+    </body>
+  </html>

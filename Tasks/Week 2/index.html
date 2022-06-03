@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada Earthquakes</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/css/main.css">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://js.arcgis.com/4.22/"></script>
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div id="viewDiv"></div>
+    <div id="basemapGallery"></div>
+    <div id="layerList"></div>
+    <div id="legend"></div>
+
+
+    <div id="select-by-rectangle" class="esri-widget esri-widget--button esri-widget esri-interactive"
+        title="Select features by rectangle">
+        <span class="esri-icon-checkbox-unchecked"></span>
+    </div>
+    <div id="clear-selection" class="esri-widget esri-widget--button esri-widget esri-interactive"
+        title="Clear selection">
+        <span class="esri-icon-erase"></span>
+    </div>
+    <div class="container">
+        <div id="tableDiv"></div>
+    </div>
+
+    <button id="basemapButton" title="Basemap Gallery">Basemap</button>
+    <button id="layerListButton" title = "Layer List">Layers</button>
+    <button id="legendButton" title = "Legend">Legend</button>
+
+</body>
+
+</html>
